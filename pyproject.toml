@@ -1,0 +1,114 @@
+[build-system]
+requires = [
+  "setuptools >= 80",
+  "setuptools_scm[simple] >= 8",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crowkit"
+description = "Manager for cosmology forecasts using CROW, TJPCov, and DerivKit"
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = ["version"]
+
+license = "MIT"
+license-files = ["LICENSE*"]
+
+authors = [
+  { name = "Nikolina Šarčević", email = "nikolina.sarcevic@gmail.com" },
+  { name = "Eduardo José Barroso" },
+  { name = "Michel Aguena" },
+  { name = "Rance Solomon" },
+]
+
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Astronomy",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+
+dependencies = [
+  "numpy",
+  "scipy",
+  "pyyaml",
+  "matplotlib",
+  "getdist",
+  "sacc",
+  "pyccl",
+  "tjpcov",
+  "derivkit",
+  "lsstdesc-crow @ git+https://github.com/LSSTDESC/crow.git@v1.0.1",
+]
+
+[dependency-groups]
+dev = ["tox"]
+
+test = [
+  "pytest",
+  { include-group = "dev" },
+]
+
+lint = [
+  "ruff",
+  { include-group = "dev" },
+]
+
+[project.scripts]
+crowkit = "crowkit.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+markers = [
+  "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "Q", "I", "D", "PLC0415"]
+ignore = ["E203", "E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["crowkit"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.tox]
+requires = ["tox>=4.22"]
+labels = { test = ["py310", "py311", "py312", "py313"] }
+envlist = [
+  "lint",
+  "py310",
+  "py311",
+  "py312",
+  "py313",
+]
+
+[tool.tox.env_run_base]
+description = "Run tests under {base_python}"
+change_dir = "{tox_root}/tests"
+dependency_groups = ["test"]
+allowlist_externals = ["pytest"]
+commands = [
+  ["pytest", { replace = "posargs", extend = true }],
+]
+
+[tool.tox.env_run_base.setenv]
+PIP_CACHE_DIR = "{tox_root}/.cache/pip"
+
+[tool.tox.env.lint]
+description = "Lint crowkit using Ruff"
+dependency_groups = ["lint"]
+commands = [
+  [
+    "ruff",
+    "check",
+    "{tox_root}",
+    { replace = "posargs", extend = true }
+  ],
+]
