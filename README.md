@@ -28,9 +28,12 @@ pip install -e .
 
 ## Quickstart
 ```bash
-crowkit --config configs/example_forecast.yaml
+crowkit-cluster-counts-forecast examples/cluster_counts_forecast/cluster_config.yaml --mode both
 ```
-
+The mode option can be both, fisher or dali. You can also run it as a class inside a python file.
+```bash
+python examples/cluster_counts_forecast/run_forecast.py
+```
 ## Scope
 CrowKit is designed to:
 - manage forecast configurations

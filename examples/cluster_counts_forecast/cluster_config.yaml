@@ -1,0 +1,84 @@
+cosmology:
+  Omega_m: 0.31
+  Omega_b: 0.04897
+  h: 0.6766
+  n_s: 0.9665
+  sigma8: 0.8102
+  w0: -1.0
+  wa: 0.0
+  transfer_function: "boltzmann_camb"
+
+mass_observable:
+  mu0: 3.0
+  mu1: 0.8
+  mu2: -0.3
+  sigma0: 0.3
+  sigma1: 0.0
+  sigma2: 0.0
+  pivot_mass: 14.3
+  pivot_redshift: 0.5
+  
+counts_modeling:
+  mass_min: 12.5
+  mass_max: 15.5
+  selection_function: False
+  completeness_a_n: 0.38
+  completeness_b_n: 1.2634
+  completeness_a_logm_piv: 13.31
+  completeness_b_logm_piv: 0.2025
+  purity_a_n: 3.9193
+  purity_b_n: -0.3323
+  purity_a_logm_piv: 1.1839
+  purity_b_logm_piv: -0.4077
+  mass_func: "Despali16"
+  mass_def: "200c"
+  halo_bias: "Tinker10"
+  photoz_err: 0.05
+survey:
+  sky_area: 440.0
+
+binning:
+  z_min: 0.2
+  z_max: 0.5
+  n_z_bins: 3
+  proxy_min: 1.0
+  proxy_max: 1.6
+  n_proxy_bins: 3
+
+grid:
+  mass_grid_size: 30
+  redshift_grid_size: 10
+  proxy_grid_size: 12
+
+deriv:
+  method: finite
+  stepsize: 1.0e-3
+  num_points: 5
+  extrapolation: ridders
+  levels: 4
+  forecast_order: 2
+
+forecast:
+  active_params: [Omega_m, sigma8, mu0, sigma0]
+  mode: fisher          # fisher | dali | both
+  cov_floor: 1.0
+
+priors:
+  prior_frac: null    # e.g. 0.1 applies 10% relative prior to all active params
+  sigma_map:          # param-level overrides (null = no prior for that param)
+    Omega_m: null
+    sigma8: null
+  nsigma_bounds: null # e.g. 5.0 adds finite DALI bounds at +/- 5 sigma
+
+# Remove or set to null to disable sweep and run a single forecast.
+sweep:
+  sky_area: [440, 1000, 5000]
+  # sigma0: [0.1, 0.2, 0.3]   # uncomment for 2D sweep
+
+plot:
+  output: triangle.pdf
+  filled: false
+  show: true
+  colormap: cmr.pride
+  cmap_min: 0.15
+  cmap_max: 0.85
