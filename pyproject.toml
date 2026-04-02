@@ -38,9 +38,9 @@ dependencies = [
   "getdist",
   "sacc",
   "pyccl",
-  "tjpcov",
+  "tjpcov @ git+https://github.com/LSSTDESC/TJPCov.git@clustercount_cov_validation",
   "derivkit",
-  "lsstdesc-crow @ git+https://github.com/LSSTDESC/crow.git@v1.0.1",
+  "lsstdesc-crow",
 ]
 
 [dependency-groups]
@@ -58,6 +58,7 @@ lint = [
 
 [project.scripts]
 crowkit = "crowkit.cli:main"
+crowkit-cluster-counts-forecast = "crowkit.cluster_counts_forecast:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
